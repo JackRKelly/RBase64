@@ -1,13 +1,20 @@
+const CHARACTER_INDEX: [char; 64] = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+    'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+    'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4',
+    '5', '6', '7', '8', '9', '+', '/',
+];
+
 fn main() {
     println!("Hello, world!");
     let decode = "VGVzdA==";
     decode_base64(decode);
-    let encode = vec![20, 30, 40, 50, 34, 60, 34, 30];
+    let encode = b"Man";
     encode_base64(encode);
 }
 
 fn first_char(a: u8) -> u8 {
-    a & 0b1111_1100
+    (a & 0b1111_1100) >> 2
 }
 
 fn second_char(a: u8, b: u8) -> u8 {
@@ -31,7 +38,7 @@ fn decode_base64(base64: &str) {
     //Convert to flat vector and return
 }
 
-fn encode_base64(bytes: Vec<u8>) {
+fn encode_base64(bytes: &[u8]) {
     //Take flat vector of binary [01010101, 01010101, 01010101, 01010101, 01010101, 01010101]
 
     //Chunk flat vector in EXACT groups of 3 [[01010101, 01010101, 01010101], [01010101, 01010101, 01010101]]
@@ -42,7 +49,12 @@ fn encode_base64(bytes: Vec<u8>) {
 
     let chunks = bytes.chunks_exact(3);
     for chunk in chunks {
+        let first = CHARACTER_INDEX[usize::from(first_char(chunk[0]))];
+        let second = CHARACTER_INDEX[usize::from(second_char(chunk[0], chunk[1]))];
+        let third = CHARACTER_INDEX[usize::from(third_char(chunk[1], chunk[2]))];
+        let fourth = CHARACTER_INDEX[usize::from(fourth_char(chunk[2]))];
         dbg!(chunk);
+        dbg!(first, second, third, fourth);
     }
 
     //LOOP - through by
