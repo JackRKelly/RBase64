@@ -19,9 +19,15 @@ fn encode_base64(bytes: Vec<u8>) {
     //Take flat vector of binary [01010101, 01010101, 01010101, 01010101, 01010101, 01010101]
 
     //Chunk flat vector in EXACT groups of 3 [[01010101, 01010101, 01010101], [01010101, 01010101, 01010101]]
+    println!("{:?}", bytes.chunks_exact(3));
 
     //Loop through parent vector
     //[[01010101, 01010101, 01010101]]
+
+    let chunks = bytes.chunks_exact(3);
+    for chunk in chunks {
+        dbg!(chunk);
+    }
 
     //LOOP - through by
     //01010101 then 01010101 then 01010101
