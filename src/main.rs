@@ -6,6 +6,22 @@ fn main() {
     encode_base64(encode);
 }
 
+fn first_char(a: u8) -> u8 {
+    a & 0b1111_1100
+}
+
+fn second_char(a: u8, b: u8) -> u8 {
+    ((a & 0b0000_0011) << 4) | ((b & 0b1111_0000) >> 4)
+}
+
+fn third_char(a: u8, b: u8) -> u8 {
+    ((a & 0b0000_1111) << 2) | ((b & 0b1100_0000) >> 6)
+}
+
+fn fourth_char(b: u8) -> u8 {
+    b & 0b0011_1111
+}
+
 fn decode_base64(base64: &str) {
     //let chunks = input.chars().map(|c| hashmap.get(c).unwrap()).chunks_exact(4);
 
