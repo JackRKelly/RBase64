@@ -31,7 +31,9 @@ fn fourth_char(b: u8) -> u8 {
     b & 0b0011_1111
 }
 
-fn decode_base64(base64: &str) {
+fn decode_base64(base64: &str) -> Vec<u8> {
+    let mut final_bytes: Vec<u8> = Vec::with_capacity(base64.len() / 4 * 3);
+
     let mut letter_index = HashMap::new();
     letter_index.insert('A', 0);
     letter_index.insert('B', 1);
@@ -97,8 +99,11 @@ fn decode_base64(base64: &str) {
     letter_index.insert('9', 61);
     letter_index.insert('+', 62);
     letter_index.insert('/', 63);
+    letter_index.insert('=', 64);
 
     assert!(base64.len() % 4 == 0);
+
+    dbg!(base64);
 
     let byte = base64
         .chars()
@@ -108,12 +113,30 @@ fn decode_base64(base64: &str) {
 
     let chunks = byte.chunks_exact(4);
 
-    dbg!(chunks);
+    for chunk in chunks {
+        dbg!(chunk);
+
+        // final_bytes.push();
+    }
+
+    // dbg!(&byte);
+
+    // dbg!(chunks);
+
+    // .chars()
+    // .map(|c| letter_index.get(&c).unwrap())
+    // .cloned()
+    // .collect::<Vec<u8>>();
+
+    // let chunks = byte.chunks_exact(4);
+
+    // dbg!(chunks);
 
     //Iterate over input string, compare string to list of indicies, chunk by groups of 4
     //[[20, 30, 40, 50], [34, 60, 34, 30]]
 
     //Convert to flat vector and return
+    final_bytes
 }
 
 fn encode_base64(bytes: &[u8]) -> String {
