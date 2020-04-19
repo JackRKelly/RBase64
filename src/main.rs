@@ -29,7 +29,7 @@ fn fourth_char(b: u8) -> u8 {
     b & 0b0011_1111
 }
 
-fn decode_base64(base64: &str) {
+fn decode_base64(_base64: &str) {
     //let chunks = input.chars().map(|c| hashmap.get(c).unwrap()).chunks_exact(4);
 
     //Iterate over input string, compare string to list of indicies, chunk by groups of 4
@@ -38,39 +38,43 @@ fn decode_base64(base64: &str) {
     //Convert to flat vector and return
 }
 
-fn encode_base64(bytes: &[u8]) {
-    //Take flat vector of binary [01010101, 01010101, 01010101, 01010101, 01010101, 01010101]
+fn encode_base64(bytes: &[u8]) -> String {
+    let mut final_string: String = String::new();
 
-    //Chunk flat vector in EXACT groups of 3 [[01010101, 01010101, 01010101], [01010101, 01010101, 01010101]]
-    println!("{:?}", bytes.chunks_exact(3));
-
-    //Loop through parent vector
-    //[[01010101, 01010101, 01010101]]
-
-    let chunks = bytes.chunks_exact(3);
-    for chunk in chunks {
-        let first = CHARACTER_INDEX[usize::from(first_char(chunk[0]))];
-        let second = CHARACTER_INDEX[usize::from(second_char(chunk[0], chunk[1]))];
-        let third = CHARACTER_INDEX[usize::from(third_char(chunk[1], chunk[2]))];
-        let fourth = CHARACTER_INDEX[usize::from(fourth_char(chunk[2]))];
+    let mut chunks = bytes.chunks_exact(3);
+    while let Some(chunk) = chunks.next() {
+        final_string.push(CHARACTER_INDEX[usize::from(first_char(chunk[0]))]);
+        final_string.push(CHARACTER_INDEX[usize::from(second_char(chunk[0], chunk[1]))]);
+        final_string.push(CHARACTER_INDEX[usize::from(third_char(chunk[1], chunk[2]))]);
+        final_string.push(CHARACTER_INDEX[usize::from(fourth_char(chunk[2]))]);
         dbg!(chunk);
-        dbg!(first, second, third, fourth);
     }
 
-    //LOOP - through by
-    //01010101 then 01010101 then 01010101
-    //Step 1
-    //Create array for first_char, second_char, third_char, fourth_char function results
-    //Step 2
-    //LOOP - Iterate over array of 4, 6 bit integers
-    //Convert 6 bit integers into numerical composite values
-    //010101 -> 21
-    //Step 3
-    //Match composite values against hashmap/list to get characters (max of 63)
-    //Step 4
-    //Add characters to final string variable
+    final_string
+}
 
-    //Handle EXACT group of 3 chunk remainder
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    //Return final string variable
+    #[test]
+    fn test_encode_2_char() {
+        assert_eq!(encode_base64(b"Hi"), "SGk=");
+    }
+    #[test]
+    fn test_encode_3_char() {
+        assert_eq!(encode_base64(b"Man"), "TWFu");
+    }
+    #[test]
+    fn test_encode_4_char() {
+        assert_eq!(encode_base64(b"What"), "V2hhdA==");
+    }
+    #[test]
+    fn test_encode_5_char() {
+        assert_eq!(encode_base64(b"Hello"), "SGVsbG8=");
+    }
+    #[test]
+    fn test_encode_6_char() {
+        assert_eq!(encode_base64(b"Pickle"), "UGlja2xl");
+    }
 }
