@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 const CHARACTER_INDEX: [char; 64] = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
     'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
@@ -29,8 +31,84 @@ fn fourth_char(b: u8) -> u8 {
     b & 0b0011_1111
 }
 
-fn decode_base64(_base64: &str) {
-    //let chunks = input.chars().map(|c| hashmap.get(c).unwrap()).chunks_exact(4);
+fn decode_base64(base64: &str) {
+    let mut letter_index = HashMap::new();
+    letter_index.insert('A', 0);
+    letter_index.insert('B', 1);
+    letter_index.insert('C', 2);
+    letter_index.insert('D', 3);
+    letter_index.insert('E', 4);
+    letter_index.insert('F', 5);
+    letter_index.insert('G', 6);
+    letter_index.insert('H', 7);
+    letter_index.insert('I', 8);
+    letter_index.insert('J', 9);
+    letter_index.insert('K', 10);
+    letter_index.insert('L', 11);
+    letter_index.insert('M', 12);
+    letter_index.insert('N', 13);
+    letter_index.insert('O', 14);
+    letter_index.insert('P', 15);
+    letter_index.insert('Q', 16);
+    letter_index.insert('R', 17);
+    letter_index.insert('S', 18);
+    letter_index.insert('T', 19);
+    letter_index.insert('U', 20);
+    letter_index.insert('V', 21);
+    letter_index.insert('W', 22);
+    letter_index.insert('X', 23);
+    letter_index.insert('Y', 24);
+    letter_index.insert('Z', 25);
+    letter_index.insert('a', 26);
+    letter_index.insert('b', 27);
+    letter_index.insert('c', 28);
+    letter_index.insert('d', 29);
+    letter_index.insert('e', 30);
+    letter_index.insert('f', 31);
+    letter_index.insert('g', 32);
+    letter_index.insert('h', 33);
+    letter_index.insert('i', 34);
+    letter_index.insert('j', 35);
+    letter_index.insert('k', 36);
+    letter_index.insert('l', 37);
+    letter_index.insert('m', 38);
+    letter_index.insert('n', 39);
+    letter_index.insert('o', 40);
+    letter_index.insert('p', 41);
+    letter_index.insert('q', 42);
+    letter_index.insert('r', 43);
+    letter_index.insert('s', 44);
+    letter_index.insert('t', 45);
+    letter_index.insert('u', 46);
+    letter_index.insert('v', 47);
+    letter_index.insert('w', 48);
+    letter_index.insert('x', 49);
+    letter_index.insert('y', 50);
+    letter_index.insert('z', 51);
+    letter_index.insert('0', 52);
+    letter_index.insert('1', 53);
+    letter_index.insert('2', 54);
+    letter_index.insert('3', 55);
+    letter_index.insert('4', 56);
+    letter_index.insert('5', 57);
+    letter_index.insert('6', 58);
+    letter_index.insert('7', 59);
+    letter_index.insert('8', 60);
+    letter_index.insert('9', 61);
+    letter_index.insert('+', 62);
+    letter_index.insert('/', 63);
+
+    assert!(base64.len() % 4 == 0);
+
+    let byte = base64
+        .chars()
+        .map(|c| letter_index.get(&c).unwrap())
+        .cloned()
+        .collect::<Vec<u8>>();
+
+    let chunks = byte.chunks_exact(4);
+
+    dbg!(chunks);
 
     //Iterate over input string, compare string to list of indicies, chunk by groups of 4
     //[[20, 30, 40, 50], [34, 60, 34, 30]]
