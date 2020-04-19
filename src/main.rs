@@ -10,7 +10,7 @@ fn main() {
     let decode = "VGVzdA==";
     decode_base64(decode);
     let encode = b"Man";
-    encode_base64(encode);
+    dbg!(encode_base64(encode));
 }
 
 fn first_char(a: u8) -> u8 {
@@ -39,7 +39,7 @@ fn decode_base64(_base64: &str) {
 }
 
 fn encode_base64(bytes: &[u8]) -> String {
-    let mut final_string: String = String::new();
+    let mut final_string: String = String::with_capacity((bytes.len() as f64 * 1.25) as usize);
 
     let mut chunks = bytes.chunks_exact(3);
     while let Some(chunk) = chunks.next() {
