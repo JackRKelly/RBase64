@@ -47,8 +47,28 @@ fn encode_base64(bytes: &[u8]) -> String {
         final_string.push(CHARACTER_INDEX[usize::from(second_char(chunk[0], chunk[1]))]);
         final_string.push(CHARACTER_INDEX[usize::from(third_char(chunk[1], chunk[2]))]);
         final_string.push(CHARACTER_INDEX[usize::from(fourth_char(chunk[2]))]);
-        dbg!(chunk);
     }
+
+    let remainder = chunks.remainder();
+
+    match remainder.len() {
+        0 => return final_string,
+        1 => {
+            final_string.push(CHARACTER_INDEX[usize::from(first_char(remainder[0]))]);
+            final_string.push(CHARACTER_INDEX[usize::from(second_char(remainder[0], 0))]);
+            final_string.push_str("==");
+        }
+        2 => {
+            final_string.push(CHARACTER_INDEX[usize::from(first_char(remainder[0]))]);
+            final_string
+                .push(CHARACTER_INDEX[usize::from(second_char(remainder[0], remainder[1]))]);
+            final_string.push(CHARACTER_INDEX[usize::from(third_char(remainder[1], 0))]);
+            final_string.push('=');
+        }
+        _ => unreachable!(),
+    }
+
+    if !remainder.is_empty() {}
 
     final_string
 }
@@ -57,6 +77,10 @@ fn encode_base64(bytes: &[u8]) -> String {
 mod tests {
     use super::*;
 
+    #[test]
+    fn test_encode_1_char() {
+        assert_eq!(encode_base64(b"."), "Lg==");
+    }
     #[test]
     fn test_encode_2_char() {
         assert_eq!(encode_base64(b"Hi"), "SGk=");
