@@ -7,13 +7,6 @@ const CHARACTER_INDEX: [char; 64] = [
     '5', '6', '7', '8', '9', '+', '/',
 ];
 
-pub fn main() {
-    let decode = "TWF=";
-    dbg!(decode_base64(decode));
-    let encode = b"Man";
-    dbg!(encode_base64(encode));
-}
-
 pub fn first_char(a: u8) -> u8 {
     (a & 0b1111_1100) >> 2
 }
@@ -155,8 +148,6 @@ pub fn encode_base64(bytes: &[u8]) -> String {
         }
         _ => unreachable!(),
     }
-
-    if !remainder.is_empty() {}
 
     final_string
 }
