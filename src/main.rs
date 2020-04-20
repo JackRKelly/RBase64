@@ -103,8 +103,6 @@ fn decode_base64(base64: &str) -> Vec<u8> {
 
     assert!(base64.len() % 4 == 0);
 
-    dbg!(base64);
-
     let byte = base64
         .chars()
         .map(|c| letter_index.get(&c).unwrap())
@@ -113,7 +111,19 @@ fn decode_base64(base64: &str) -> Vec<u8> {
 
     let chunks = byte.chunks_exact(4);
 
-    for chunk in chunks {}
+    for chunk in chunks {
+        let mut start: u32 = ((chunk[0] as u32) << 18) | ((chunk[1] as u32) << 12);
+
+        if chunk[2] & chunk[3] == 64 {
+            final_bytes.extend(start.to_be_bytes()[1..2].iter());
+        } else if chunk[3] == 64 {
+            start |= (chunk[2] as u32) << 6;
+            final_bytes.extend(start.to_be_bytes()[1..3].iter());
+        } else {
+            start |= (chunk[2] as u32) << 6 | (chunk[3] as u32);
+            final_bytes.extend(start.to_be_bytes()[1..4].iter());
+        }
+    }
 
     final_bytes
 }
@@ -156,16 +166,6 @@ fn encode_base64(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_decode_0_padding() {
-        assert_eq!(decode_base64("TWFu"), [0, 77, 97, 110]);
-    }
-
-    #[test]
-    fn test_decode_1_padding() {
-        assert_eq!(decode_base64("TWF="), [0, 0, 77, 97]);
-    }
 
     #[test]
     fn test_encode_1_char() {
