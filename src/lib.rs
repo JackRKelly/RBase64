@@ -106,7 +106,7 @@ pub fn decode_base64(base64: &str) -> Vec<u8> {
         let mut start: u32 = ((chunk[0] as u32) << 18) | ((chunk[1] as u32) << 12);
 
         if chunk[2] & chunk[3] == 64 {
-            final_bytes.extend_from_slice(&start.to_be_bytes()[1..2]);
+            final_bytes.push(start.to_be_bytes()[1]);
         } else if chunk[3] == 64 {
             start |= (chunk[2] as u32) << 6;
             final_bytes.extend_from_slice(&start.to_be_bytes()[1..3]);
