@@ -168,6 +168,53 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_decode_0_padding() {
+        assert_eq!(decode_base64("TWFu"), [77, 97, 110]);
+    }
+
+    #[test]
+    fn test_decode_1_padding() {
+        assert_eq!(decode_base64("TWF="), [77, 97]);
+    }
+
+    #[test]
+    fn test_decode_2_padding() {
+        assert_eq!(decode_base64("TQ=="), [77]);
+    }
+
+    #[test]
+    fn test_encode_decode() {
+        assert_eq!(
+            decode_base64(&encode_base64(b"abcdefghiacbd")),
+            b"abcdefghiacbd"
+        );
+    }
+
+    #[test]
+    fn test_encode_decode_emoji() {
+        assert_eq!(
+            decode_base64(&encode_base64("🦆🤏".as_bytes())),
+            "🦆🤏".as_bytes()
+        );
+    }
+
+    #[test]
+    fn test_encode_decode_emoji_two() {
+        assert_eq!(
+            decode_base64(&encode_base64("😐😐😐".as_bytes())),
+            "😐😐😐".as_bytes()
+        );
+    }
+
+    #[test]
+    fn test_encode_decode_emoji_three() {
+        assert_eq!(
+            decode_base64(&encode_base64("👩🏾‍🤝‍👩🏾👩🏻‍🤝‍🧑🏽👩‍👩‍👧".as_bytes())),
+            "👩🏾‍🤝‍👩🏾👩🏻‍🤝‍🧑🏽👩‍👩‍👧".as_bytes()
+        );
+    }
+
+    #[test]
     fn test_encode_1_char() {
         assert_eq!(encode_base64(b"."), "Lg==");
     }
