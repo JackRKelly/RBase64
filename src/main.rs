@@ -9,8 +9,8 @@ const CHARACTER_INDEX: [char; 64] = [
 
 fn main() {
     println!("Hello, world!");
-    let decode = "VGVzdA==";
-    decode_base64(decode);
+    let decode = "TWF=";
+    dbg!(decode_base64(decode));
     let encode = b"Man";
     dbg!(encode_base64(encode));
 }
@@ -113,29 +113,8 @@ fn decode_base64(base64: &str) -> Vec<u8> {
 
     let chunks = byte.chunks_exact(4);
 
-    for chunk in chunks {
-        dbg!(chunk);
+    for chunk in chunks {}
 
-        // final_bytes.push();
-    }
-
-    // dbg!(&byte);
-
-    // dbg!(chunks);
-
-    // .chars()
-    // .map(|c| letter_index.get(&c).unwrap())
-    // .cloned()
-    // .collect::<Vec<u8>>();
-
-    // let chunks = byte.chunks_exact(4);
-
-    // dbg!(chunks);
-
-    //Iterate over input string, compare string to list of indicies, chunk by groups of 4
-    //[[20, 30, 40, 50], [34, 60, 34, 30]]
-
-    //Convert to flat vector and return
     final_bytes
 }
 
@@ -177,6 +156,16 @@ fn encode_base64(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_decode_0_padding() {
+        assert_eq!(decode_base64("TWFu"), [0, 77, 97, 110]);
+    }
+
+    #[test]
+    fn test_decode_1_padding() {
+        assert_eq!(decode_base64("TWF="), [0, 0, 77, 97]);
+    }
 
     #[test]
     fn test_encode_1_char() {
