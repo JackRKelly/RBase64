@@ -104,8 +104,7 @@ pub fn decode_base64(base64: &str) -> Vec<u8> {
 
     let byte = base64
         .chars()
-        .map(|c| letter_index.get(&c).unwrap())
-        .cloned()
+        .map(|c| *letter_index.get(&c).unwrap())
         .collect::<Vec<u8>>();
 
     let chunks = byte.chunks_exact(4);
