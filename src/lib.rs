@@ -7,31 +7,30 @@ const CHARACTER_INDEX: [char; 64] = [
     '5', '6', '7', '8', '9', '+', '/',
 ];
 
-fn main() {
-    println!("Hello, world!");
+pub fn main() {
     let decode = "TWF=";
     dbg!(decode_base64(decode));
     let encode = b"Man";
     dbg!(encode_base64(encode));
 }
 
-fn first_char(a: u8) -> u8 {
+pub fn first_char(a: u8) -> u8 {
     (a & 0b1111_1100) >> 2
 }
 
-fn second_char(a: u8, b: u8) -> u8 {
+pub fn second_char(a: u8, b: u8) -> u8 {
     ((a & 0b0000_0011) << 4) | ((b & 0b1111_0000) >> 4)
 }
 
-fn third_char(a: u8, b: u8) -> u8 {
+pub fn third_char(a: u8, b: u8) -> u8 {
     ((a & 0b0000_1111) << 2) | ((b & 0b1100_0000) >> 6)
 }
 
-fn fourth_char(b: u8) -> u8 {
+pub fn fourth_char(b: u8) -> u8 {
     b & 0b0011_1111
 }
 
-fn decode_base64(base64: &str) -> Vec<u8> {
+pub fn decode_base64(base64: &str) -> Vec<u8> {
     let mut final_bytes: Vec<u8> = Vec::with_capacity(base64.len() / 4 * 3);
 
     let mut letter_index = HashMap::new();
@@ -128,7 +127,7 @@ fn decode_base64(base64: &str) -> Vec<u8> {
     final_bytes
 }
 
-fn encode_base64(bytes: &[u8]) -> String {
+pub fn encode_base64(bytes: &[u8]) -> String {
     let mut final_string: String = String::with_capacity((bytes.len() as f64 * 1.25) as usize);
 
     let mut chunks = bytes.chunks_exact(3);
